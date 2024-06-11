@@ -3,7 +3,7 @@ class Task1:
         self.drone = drone
         self.finished = False
     
-    def run(self):
+    def run(self, tag_list, frame):
         return self.finished
 
 class Task2:
@@ -11,5 +11,5 @@ class Task2:
         self.drone = drone
         self.finished = False
     
-    def run(self):
+    def run(self, tag_list, frame):
         return self.finished

@@ -9,7 +9,7 @@ def main():
     drone.connect()
     print(drone.get_battery())
     drone.streamon()
-    drone.takeoff()
+    # drone.takeoff()
 
     detector = Detector(families="tag36h11")
 
@@ -42,12 +42,13 @@ def main():
                 cv2.circle(frame, list(map(int, corner)), 5, (0, 0, 255), -1)
 
         cv2.imshow("drone", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+
         key = cv2.waitKey(30)
-        if key == 27:
+        if (key & 0xFF) == ord("q"):
             break
 
     cv2.destroyAllWindows()
-    drone.land()
+    # drone.land()
     drone.streamoff()
 
 
