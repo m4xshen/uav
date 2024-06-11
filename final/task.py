@@ -138,6 +138,8 @@ class Task1:
         self.drone = drone
         self.finished = False
         self.tracker = Tracker()
+        self.drone_a_id = None
+        self.drone_a_x = None
     
     def run(self, tag_list, frame):
         detections = []
@@ -150,15 +152,32 @@ class Task1:
         detections = np.array(detections)
         confirmed_tracks = self.tracker.update(detections, frame.shape[:2])
 
+        tag0_count = 0
+        tag0_x = []
+        tag0_id = []
+        
         for track in confirmed_tracks:
             x_min, y_min, x_max, y_max, tag_id, corner1_x, corner1_y, corner2_x, corner2_y, corner3_x, corner3_y, corner4_x, corner4_y, track_id = map(int, track)
+            
+            if tag_id == 0:
+                tag0_count += 1
+                tag0_x.append(x_min)
+                tag0_id.append(track_id)
+                text = "A" if self.drone_a_id is not None and track_id == self.drone_a_id else "B"
+                cv2.putText(frame, text, (x_min, y_min - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-            cv2.putText(frame, f"ID: {track_id}", (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.putText(frame, f"ID: {tag_id}", (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
             cv2.circle(frame, (corner1_x, corner1_y), 5, (0, 0, 255), -1)
             cv2.circle(frame, (corner2_x, corner2_y), 5, (0, 0, 255), -1)
             cv2.circle(frame, (corner3_x, corner3_y), 5, (0, 0, 255), -1)
             cv2.circle(frame, (corner4_x, corner4_y), 5, (0, 0, 255), -1)
+
+        if tag0_count == 2 and self.drone_a_id is None:
+            self.drone_a_id = tag0_id[0] if tag0_x[0] < tag0_x[1] else tag0_id[1]
+            self.drone_a_x = tag0_x[0] if tag0_x[0] < tag0_x[1] else tag0_x[1]
+        
+        print(self.drone_a_id)
 
         return self.finished
 
