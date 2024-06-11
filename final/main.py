@@ -23,6 +23,7 @@ def main():
         tag_list = detector.detect(
             cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),
             estimate_tag_pose=True,
+            camera_params=[904, 905, 482, 350],
             tag_size=0.1,
         )
 
