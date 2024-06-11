@@ -1,0 +1,9 @@
+# Camera Intrinsic Parameters
+camera_focal_length: [904.5253899445975, 905.7570231052669]
+camera_optical_center: [482.99745639009217, 350.6034734496625]
+camera_distortion_coefficients: [0.07922014, -0.61430365, -0.00855902, -0.00129873,  1.29506247]
+
+# Initial UAV State
+uav_position: [0.94, 0.0, 0.6]
+uav_orientation: [0.0, 0.0, -3.14159]
+uav_velocity: 0.5
